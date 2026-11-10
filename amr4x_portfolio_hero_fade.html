@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMR4X — Digital Architect & Programmer Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display, Cormorant Garamond, Inter, Great Vibes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        canvasBg: '#141210',
+                        ivory: '#f7f5ef',
+                        vermilion: '#c5221f',
+                        gold: '#b89753',
+                        charcoal: '#1a1816',
+                        mutedGray: '#7a7570',
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        garamond: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                        script: ['"Great Vibes"', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles & textures */
+        body {
+            background-color: #141210;
+            color: #1a1816;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Subtle canvas texture overlay */
+        .canvas-texture {
+            background-image: radial-gradient(rgba(200, 190, 175, 0.08) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            transition: transform 0.15s ease-out, width 0.2s, height 0.2s, background-color 0.2s;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #c5221f;
+        }
+        .cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(197, 34, 31, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .custom-cursor { display: none; }
+        }
+
+        /* Ticket Button Style */
+        .ticket-btn {
+            position: relative;
+            background: #1a1816;
+            color: #f7f5ef;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .ticket-btn:hover {
+            background: #c5221f;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(197, 34, 31, 0.3);
+        }
+
+        /* Reveal animations */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-on-scroll.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Full-width hero artwork with soft fades into the ivory canvas */
+        .hero-atmosphere {
+            position: absolute;
+            inset: -3% -2% -2%;
+            z-index: 0;
+            pointer-events: none;
+            background-image: url("https://www.image2url.com/r2/default/files/1794319164094-0fa37812-8082-490b-8a3a-023c55c2b5d7.png");
+            background-size: cover;
+            background-position: center 46%;
+            background-repeat: no-repeat;
+            opacity: 0.62;
+            filter: saturate(0.82) contrast(1.03);
+            -webkit-mask-image: radial-gradient(ellipse 78% 72% at 52% 48%, #000 30%, rgba(0,0,0,0.86) 56%, transparent 100%);
+            mask-image: radial-gradient(ellipse 78% 72% at 52% 48%, #000 30%, rgba(0,0,0,0.86) 56%, transparent 100%);
+            transition: opacity 700ms ease;
+        }
+        .hero-atmosphere::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to bottom, #f7f5ef 0%, rgba(247,245,239,0.72) 12%, rgba(247,245,239,0.10) 36%, rgba(247,245,239,0.12) 72%, #f7f5ef 100%),
+                linear-gradient(to right, #f7f5ef 0%, rgba(247,245,239,0.52) 15%, rgba(247,245,239,0.04) 39%, rgba(247,245,239,0.04) 69%, rgba(247,245,239,0.48) 88%, #f7f5ef 100%);
+        }
+        @media (max-width: 768px) {
+            .hero-atmosphere {
+                inset: 0 -8% -2%;
+                opacity: 0.48;
+                background-position: center center;
+                -webkit-mask-image: radial-gradient(ellipse 94% 66% at 50% 45%, #000 28%, rgba(0,0,0,0.82) 58%, transparent 100%);
+                mask-image: radial-gradient(ellipse 94% 66% at 50% 45%, #000 28%, rgba(0,0,0,0.82) 58%, transparent 100%);
+            }
+        }
+
+        /* Sculptural & Interactive Shimmer Effects */
+        .sculpture-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .sculpture-shimmer {
+            background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 50%, rgba(197,34,31,0.2) 100%);
+        }
+
+        /* Magnetic button smoothness */
+        .magnetic-target {
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Nav Scrollspy Active State */
+        .nav-link.active-nav {
+            color: #c5221f;
+        }
+        .nav-link.active-nav::after {
+            width: 100% !important;
+        }
+    </style>
+</head>
+<body class="canvas-texture antialiased selection:bg-vermilion selection:text-ivory">
+
+    <!-- Subtle Interactive Particles Canvas Background -->
+    <canvas id="interactiveCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- Custom Cursor Elements -->
+    <div class="custom-cursor cursor-dot" id="cursorDot"></div>
+    <div class="custom-cursor cursor-ring" id="cursorRing"></div>
+
+    <!-- Loading Screen -->
+    <div id="loader" class="fixed inset-0 z-50 bg-canvasBg flex flex-col items-center justify-center transition-opacity duration-700">
+        <div class="text-ivory font-serif text-3xl md:text-5xl tracking-widest mb-4 opacity-90 animate-pulse">AMR4X</div>
+        <div class="w-32 h-[1px] bg-vermilion relative overflow-hidden">
+            <div class="absolute inset-0 bg-ivory animate-[shimmer_1.5s_infinite]"></div>
+        </div>
+        <p class="text-mutedGray font-garamond italic mt-3 text-sm tracking-wider">Loading Digital Sanctuary...</p>
+    </div>
+
+    <!-- Main Outer Wrapper with Canvas Feel -->
+    <div class="min-h-screen py-4 md:py-8 px-3 md:px-12 flex justify-center items-center relative z-10">
+        
+        <!-- Large Central Ivory Canvas -->
+        <main class="w-full max-w-[1440px] bg-ivory text-charcoal shadow-2xl relative overflow-hidden rounded-[2px] border border-[#d8d4c9]">
+            
+            <!-- Minimalist Header / Navigation -->
+            <header class="flex items-center justify-between px-6 md:px-16 py-6 md:py-8 border-b border-[#e5e1d5] z-30 relative">
+                <div class="flex items-center gap-3">
+                    <span class="text-vermilion font-bold text-xl cursor-pointer hover:rotate-90 transition-transform duration-300" title="System Plus">+</span>
+                    <span class="font-serif tracking-widest text-xs md:text-sm font-semibold uppercase">Est. 2026 / AMR4X</span>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-10 text-xs tracking-[0.2em] uppercase font-medium">
+                    <a href="#about" class="nav-link hover:text-vermilion transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-vermilion hover:after:w-full after:transition-all">About</a>
+                    <a href="#skills" class="nav-link hover:text-vermilion transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-vermilion hover:after:w-full after:transition-all">Skills</a>
+                    <a href="#projects" class="nav-link hover:text-vermilion transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-vermilion hover:after:w-full after:transition-all">Projects</a>
+                    <a href="#contact" class="nav-link hover:text-vermilion transition-colors relative py-1 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-vermilion hover:after:w-full after:transition-all">Contact</a>
+                </nav>
+
+                <!-- Status Badge & Mobile Menu Toggle -->
+                <div class="flex items-center gap-4">
+                    <div class="hidden lg:flex items-center gap-2 px-3 py-1 bg-[#ede8df] rounded-full text-[10px] tracking-widest uppercase font-mono">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span>
+                        <span>Available for Projects</span>
+                    </div>
+                    <!-- Mobile Hamburger Button -->
+                    <button id="menuToggle" class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none">
+                        <span class="w-6 h-[2px] bg-charcoal transition-transform duration-300"></span>
+                        <span class="w-6 h-[2px] bg-charcoal transition-opacity duration-300"></span>
+                        <span class="w-6 h-[2px] bg-charcoal transition-transform duration-300"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Mobile Navigation Drawer -->
+            <div id="mobileMenu" class="fixed inset-0 bg-ivory z-50 flex flex-col justify-center px-10 transform translate-x-full transition-transform duration-500 md:hidden">
+                <button id="closeMenu" class="absolute top-8 right-8 text-2xl font-serif">&times;</button>
+                <div class="font-script text-vermilion text-4xl mb-6">Amr4x</div>
+                <nav class="flex flex-col space-y-6 text-2xl font-serif">
+                    <a href="#about" class="mobile-link hover:text-vermilion transition-colors">01. About</a>
+                    <a href="#skills" class="mobile-link hover:text-vermilion transition-colors">02. Skills</a>
+                    <a href="#projects" class="mobile-link hover:text-vermilion transition-colors">03. Projects</a>
+                    <a href="#contact" class="mobile-link hover:text-vermilion transition-colors">04. Contact</a>
+                </nav>
+                <div class="mt-12 pt-6 border-t border-[#e5e1d5] text-xs font-mono text-mutedGray">
+                    FULL STACK DEVELOPER / WEB ARCHITECT
+                </div>
+            </div>
+
+            <!-- HERO SECTION -->
+            <section class="relative px-6 md:px-16 pt-12 md:pt-20 pb-16 md:pb-28 overflow-hidden">
+                <!-- One wide background artwork behind both the intro and Themis visual -->
+                <div class="hero-atmosphere" aria-hidden="true"></div>
+
+                <!-- Top script signature -->
+                <div class="absolute top-4 left-6 md:left-16 z-10 font-script text-vermilion text-3xl md:text-4xl opacity-90 rotate-[-4deg]">
+                    Amr4x
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+                    
+                    <!-- Left Column: Typography & Intro -->
+                    <div class="lg:col-span-4 flex flex-col justify-between space-y-8">
+                        <div>
+                            <div class="inline-block text-[11px] font-mono tracking-[0.25em] text-mutedGray uppercase mb-3 border-b border-mutedGray/30 pb-1">
+                                Full Stack Developer / Web Architect
+                            </div>
+                            <h1 class="font-serif text-6xl md:text-8xl tracking-tight leading-[0.9] text-charcoal font-normal mb-6">
+                                AMR<span class="text-vermilion italic font-garamond inline-block transition-transform duration-300 hover:scale-110">4</span>X
+                            </h1>
+                            <p class="font-garamond italic text-2xl md:text-3xl text-charcoal/80 leading-snug mb-6">
+                                "Building meaningful digital experiences through logic, creativity, and technology."
+                            </p>
+                        </div>
+
+                        <!-- Ticket CTA Button -->
+                        <div>
+                            <a href="#projects" class="ticket-btn magnetic-target inline-flex items-center gap-4 px-8 py-4 text-xs font-mono uppercase tracking-[0.2em] group">
+                                <span>Explore My Work</span>
+                                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Center Column: Dewi Themis Classical Visual -->
+                    <div class="lg:col-span-5 flex justify-center relative">
+                        <div class="relative w-full max-w-[420px] aspect-[3/4] group sculpture-card cursor-pointer" id="themisCard">
+                            
+                            <!-- Layer 1: Ambient Red Glow & Shadow Layering -->
+                            <div class="absolute -inset-6 bg-gradient-to-tr from-vermilion/20 via-gold/10 to-transparent blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+
+                            <!-- Layer 2: Asymmetric Editorial Backdrop with Angle Cutout -->
+                            <div class="absolute -inset-4 bg-gradient-to-tr from-[#dfd8c8] via-[#ebe5d8] to-[#f8f6f0] border border-[#cfc6b4] shadow-2xl transition-all duration-500 group-hover:scale-[1.02] -z-10" style="clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px));"></div>
+                            
+                            <!-- Layer 3: Editorial Corner Frame Accents -->
+                            <div class="absolute -top-3 -left-3 w-10 h-10 border-t-2 border-l-2 border-vermilion z-20 pointer-events-none transition-transform duration-500 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5"></div>
+                            <div class="absolute -bottom-3 -right-3 w-10 h-10 border-b-2 border-r-2 border-gold z-20 pointer-events-none transition-transform duration-500 group-hover:translate-x-1.5 group-hover:translate-y-1.5"></div>
+                            <div class="absolute top-3 right-3 text-[9px] font-mono tracking-widest text-vermilion z-20 uppercase font-semibold">FIG. 01 / CLASSIC</div>
+
+                            <!-- Layer 4: Main Image Container with Cutout Angle & Shimmer Overlay -->
+                            <div class="w-full h-full overflow-hidden bg-[#d9d1c1] relative shadow-2xl border border-[#c5bca8]" style="clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));">
+                                <img 
+                                    src="https://www.image2url.com/r2/default/files/1794306618489-cb0fc53e-1bae-44a4-a1bd-18cb38815ea2.png" 
+                                    alt="Classical Goddess Themis" 
+                                    class="themis-image w-full h-full object-cover filter contrast-[1.08] brightness-[0.98] transition-transform duration-700 ease-out group-hover:scale-105"
+                                    id="themisImage"
+                                    onerror="this.onerror=null; this.src='https://placehold.co/600x800/222222/f7f5ef?text=Classical+Themis';"
+                                >
+                                <!-- Light Beam Shimmer & Fine Art Vignette Overlay -->
+                                <div class="absolute inset-0 sculpture-shimmer opacity-80 pointer-events-none transition-opacity group-hover:opacity-100"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-charcoal/60 via-transparent to-transparent opacity-70 pointer-events-none"></div>
+                                
+                                <div class="absolute bottom-4 left-4 right-4 text-center z-10">
+                                    <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-ivory/90 bg-charcoal/80 px-4 py-1.5 backdrop-blur-md border border-ivory/20 inline-block transition-transform duration-300 group-hover:translate-y-[-2px]" style="clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);">
+                                        Themis / Divine Order & Logic
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Secondary Editorial Quote & Status -->
+                    <div class="lg:col-span-3 flex flex-col justify-between h-full space-y-8 lg:pl-6 border-t lg:border-t-0 lg:border-l border-[#e5e1d5] pt-8 lg:pt-0">
+                        <div>
+                            <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-vermilion block mb-2">Philosophy</span>
+                            <h3 class="font-serif text-xl leading-relaxed text-charcoal mb-4">
+                                Build. Break. <br><span class="italic font-garamond text-vermilion">Understand. Rebuild.</span>
+                            </h3>
+                            <p class="text-xs text-mutedGray leading-relaxed font-sans">
+                                I believe the best way to learn technology is to build with it. Every experiment, every failure, and every line of code becomes part of the process.
+                            </p>
+                        </div>
+
+                        <div>
+                            <div class="text-[10px] font-mono tracking-widest uppercase text-mutedGray mb-1">Current Focus</div>
+                            <div class="text-sm font-serif font-medium text-charcoal">Web Development, AI & Cybersecurity</div>
+                        </div>
+                        
+                        <div class="pt-4 border-t border-[#e5e1d5]">
+                            <div class="font-serif text-4xl text-vermilion tracking-wider">
+                                BEYOND <br><span class="italic font-garamond text-charcoal">THE LOGIC</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ABOUT SECTION -->
+            <section id="about" class="py-24 px-6 md:px-16 border-t border-[#e5e1d5] bg-[#f2efe9] relative">
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex items-center gap-4 mb-12">
+                        <span class="font-mono text-xs text-vermilion tracking-[0.3em] uppercase">01 / Profile</span>
+                        <div class="h-[1px] bg-[#d8d4c9] flex-grow"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+                        <div class="md:col-span-5">
+                            <h2 class="font-serif text-4xl md:text-5xl text-charcoal leading-tight">
+                                Behind every line of code, there is a <span class="italic font-garamond text-vermilion">purpose.</span>
+                            </h2>
+                        </div>
+                        <div class="md:col-span-7 space-y-6 text-charcoal/80 font-sans leading-relaxed text-base md:text-lg">
+                            <p>
+                                I am <strong class="text-charcoal font-semibold">AMR4X</strong> — a student, developer, and curious mind exploring the space between technology and creativity. I build things to understand them. I experiment to learn. And sometimes, I break things just to discover how they work.
+                            </p>
+                            <p class="text-sm text-mutedGray font-sans leading-relaxed">
+                                My interests move across <strong class="text-charcoal font-medium">web development, artificial intelligence, cybersecurity, and digital design</strong> — always searching for better ways to turn ideas into something tangible.
+                            </p>
+
+                            <div class="grid grid-cols-2 gap-6 pt-6 border-t border-[#d8d4c9] text-xs font-mono">
+                                <div>
+                                    <span class="text-vermilion block uppercase tracking-widest mb-1">Interests</span>
+                                    <span>Web Development · AI · Cybersecurity · Digital Design</span>
+                                </div>
+                                <div>
+                                    <span class="text-vermilion block uppercase tracking-widest mb-1">Current Focus</span>
+                                    <span>Learning. Building. Experimenting.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SKILLS SECTION -->
+            <section id="skills" class="py-24 px-6 md:px-16 border-t border-[#e5e1d5] relative">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex items-center gap-4 mb-12">
+                        <span class="font-mono text-xs text-vermilion tracking-[0.3em] uppercase">02 / Skills & Crafts</span>
+                        <div class="h-[1px] bg-[#d8d4c9] flex-grow"></div>
+                    </div>
+
+                    <div class="mb-16">
+                        <h2 class="font-serif text-4xl md:text-6xl text-charcoal">
+                            Digital <span class="italic font-garamond text-vermilion">Craftsmanship</span>
+                        </h2>
+                        <p class="text-mutedGray font-sans text-sm mt-3 max-w-xl">
+                            Practical tools, core web languages, and creative workflow focused on clean execution and continuous learning.
+                        </p>
+                    </div>
+
+                    <!-- Skills Editorial Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        
+                        <!-- Skill Item 1 -->
+                        <div class="p-8 bg-[#f2efe9] border border-[#e5e1d5] hover:border-vermilion transition-all duration-300 hover:-translate-y-1.5 group">
+                            <div class="font-mono text-xs text-mutedGray mb-3">01 / FOUNDATION</div>
+                            <h3 class="font-serif text-2xl text-charcoal mb-2 group-hover:text-vermilion transition-colors">HTML5 & CSS3</h3>
+                            <p class="text-xs text-mutedGray leading-relaxed">Semantic layouting, modern CSS flexbox & grid, custom typography, and responsive structures.</p>
+                        </div>
+
+                        <!-- Skill Item 2 -->
+                        <div class="p-8 bg-[#f2efe9] border border-[#e5e1d5] hover:border-vermilion transition-all duration-300 hover:-translate-y-1.5 group">
+                            <div class="font-mono text-xs text-mutedGray mb-3">02 / LOGIC</div>
+                            <h3 class="font-serif text-2xl text-charcoal mb-2 group-hover:text-vermilion transition-colors">JavaScript (ES6+)</h3>
+                            <p class="text-xs text-mutedGray leading-relaxed">DOM manipulation, interactive UI elements, asynchronous fetching, and clean script logic.</p>
+                        </div>
+
+                        <!-- Skill Item 3 -->
+                        <div class="p-8 bg-[#f2efe9] border border-[#e5e1d5] hover:border-vermilion transition-all duration-300 hover:-translate-y-1.5 group">
+                            <div class="font-mono text-xs text-mutedGray mb-3">03 / UTILITY</div>
+                            <h3 class="font-serif text-2xl text-charcoal mb-2 group-hover:text-vermilion transition-colors">Tailwind CSS</h3>
+                            <p class="text-xs text-mutedGray leading-relaxed">Rapid prototyping, consistent design system implementation, and clean UI components.</p>
+                        </div>
+
+                        <!-- Skill Item 4 -->
+                        <div class="p-8 bg-[#f2efe9] border border-[#e5e1d5] hover:border-vermilion transition-all duration-300 hover:-translate-y-1.5 group">
+                            <div class="font-mono text-xs text-mutedGray mb-3">04 / VERSION CONTROL</div>
+                            <h3 class="font-serif text-2xl text-charcoal mb-2 group-hover:text-vermilion transition-colors">Git & GitHub</h3>
+                            <p class="text-xs text-mutedGray leading-relaxed">Source code management, commit hygiene, repository hosting, and project maintenance.</p>
+                        </div>
+
+                        <!-- Skill Item 5 -->
+                        <div class="p-8 bg-[#f2efe9] border border-[#e5e1d5] hover:border-vermilion transition-all duration-300 hover:-translate-y-1.5 group">
+                            <div class="font-mono text-xs text-mutedGray mb-3">05 / DESIGN VIBE</div>
+                            <h3 class="font-serif text-2xl text-charcoal mb-2 group-hover:text-vermilion transition-colors">UI & Layouting</h3>
+                            <p class="text-xs text-mutedGray leading-relaxed">Editorial aesthetics, dark/light contrast, luxury minimalism, and visual balance.</p>
+                        </div>
+
+                        <!-- Skill Item 6 -->
+                        <div class="p-8 bg-[#f2efe9] border border-[#e5e1d5] hover:border-vermilion transition-all duration-300 hover:-translate-y-1.5 group">
+                            <div class="font-mono text-xs text-mutedGray mb-3">06 / WORKFLOW</div>
+                            <h3 class="font-serif text-2xl text-charcoal mb-2 group-hover:text-vermilion transition-colors">Vibe Coding & AI</h3>
+                            <p class="text-xs text-mutedGray leading-relaxed">Leveraging modern AI tools to accelerate development, refine logic, and solve complex bugs.</p>
+                        </div>
+
+                        <!-- Skill Item 7 -->
+                        <div class="p-8 bg-[#f2efe9] border border-[#e5e1d5] hover:border-vermilion transition-all duration-300 hover:-translate-y-1.5 group">
+                            <div class="font-mono text-xs text-mutedGray mb-3">07 / DEPLOYMENT</div>
+                            <h3 class="font-serif text-2xl text-charcoal mb-2 group-hover:text-vermilion transition-colors">Vercel & Netlify</h3>
+                            <p class="text-xs text-mutedGray leading-relaxed">Fast web deployment, continuous build setup, custom domains, and live project hosting.</p>
+                        </div>
+
+                        <!-- Skill Item 8 -->
+                        <div class="p-8 bg-[#f2efe9] border border-[#e5e1d5] hover:border-vermilion transition-all duration-300 hover:-translate-y-1.5 group">
+                            <div class="font-mono text-xs text-mutedGray mb-3">08 / MINDSET</div>
+                            <h3 class="font-serif text-2xl text-charcoal mb-2 group-hover:text-vermilion transition-colors">Problem Solving</h3>
+                            <p class="text-xs text-mutedGray leading-relaxed">Curiosity-driven debugging, persistent troubleshooting, and continuous skill refinement.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROJECTS SECTION (SELECTED WORKS) -->
+            <section id="projects" class="py-24 px-6 md:px-16 border-t border-[#e5e1d5] bg-[#f2efe9] relative">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex items-center gap-4 mb-12">
+                        <span class="font-mono text-xs text-vermilion tracking-[0.3em] uppercase">03 / Selected Works</span>
+                        <div class="h-[1px] bg-[#d8d4c9] flex-grow"></div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
+                        <div>
+                            <h2 class="font-serif text-4xl md:text-6xl text-charcoal">
+                                Featured <span class="italic font-garamond text-vermilion">Exhibition</span>
+                            </h2>
+                            <p class="text-mutedGray font-sans text-sm mt-3 max-w-xl">
+                                A gallery showcasing recent digital architectures, AI-driven platforms, and interactive interfaces.
+                            </p>
+                        </div>
+                        <div class="mt-4 md:mt-0 font-mono text-xs text-mutedGray">
+                            [ CATALOGUE 2026 ]
+                        </div>
+                    </div>
+
+                    <!-- Projects Exhibition List -->
+                    <div class="space-y-16">
+                        
+                        <!-- Project 1: ANVAYA -->
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-ivory p-6 md:p-10 border border-[#e5e1d5] shadow-sm hover:shadow-xl transition-all duration-500 group/anvaya" id="anvayaProjectCard">
+                            <!-- Enhanced Image Container Showcase with Architectural Cutout -->
+                            <div class="lg:col-span-7 relative group">
+                                <!-- Asymmetric Backdrop Layer with Diagonal Corner & Gold Accent Lines -->
+                                <div class="absolute -inset-3 bg-[#e4decb] border border-[#d3ccba] transition-transform duration-500 group-hover:scale-[1.015] -z-10 shadow-md" style="clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));"></div>
+                                
+                                <!-- Decorative Frame Border Element -->
+                                <div class="absolute -top-2 -right-2 w-12 h-12 border-t-2 border-r-2 border-vermilion opacity-60 group-hover:opacity-100 transition-all duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 z-10 pointer-events-none"></div>
+                                <div class="absolute -bottom-2 -left-2 w-12 h-12 border-b-2 border-l-2 border-charcoal opacity-40 group-hover:opacity-80 transition-all duration-500 group-hover:translate-y-1 group-hover:-translate-x-1 z-10 pointer-events-none"></div>
+
+                                <!-- Image Container with Ticket/Gallery Polygon Cut -->
+                                <div class="overflow-hidden bg-[#e0d9cc] aspect-[16/10] relative shadow-lg border border-[#d0c9b9]" style="clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));">
+                                    <img 
+                                        src="https://www.image2url.com/r2/default/files/1794306788201-76aa8417-5009-4f83-8a27-66fe902f88c2.png" 
+                                        alt="ANVAYA Project Preview" 
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out filter contrast-[1.02]"
+                                        onerror="this.onerror=null; this.src='https://placehold.co/900x560/1a1816/f7f5ef?text=ANVAYA+AI-Powered+Platform';"
+                                    >
+                                    <!-- Soft Fine Art Vignette Overlay -->
+                                    <div class="absolute inset-0 bg-gradient-to-t from-charcoal/40 via-transparent to-transparent opacity-50 group-hover:opacity-30 transition-opacity pointer-events-none"></div>
+
+                                    <!-- Elegant Museum-Style Badge with Angle Cut -->
+                                    <div class="absolute top-4 left-4 bg-charcoal/90 text-ivory text-[9px] font-mono uppercase tracking-[0.25em] px-3 py-1.5 backdrop-blur-md border border-ivory/20 flex items-center gap-2" style="clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-vermilion animate-pulse"></span>
+                                        <span>Featured Masterpiece</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="lg:col-span-5 flex flex-col justify-between h-full space-y-6 lg:pl-4">
+                                <div>
+                                    <div class="font-mono text-xs text-vermilion tracking-widest uppercase mb-2">01 / AI Platform</div>
+                                    <h3 class="font-serif text-3xl md:text-4xl text-charcoal mb-4 group-hover/anvaya:text-vermilion transition-colors">ANVAYA</h3>
+                                    <p class="text-sm text-charcoal/80 font-sans leading-relaxed mb-6">
+                                        An advanced AI-powered learning platform designed to deliver personalized educational pathways through natural language interaction and real-time knowledge synthesis.
+                                    </p>
+                                    <div class="flex flex-wrap gap-2 mb-6">
+                                        <span class="text-[10px] font-mono bg-[#f2efe9] px-2.5 py-1 border border-[#d8d4c9] hover:border-vermilion transition-colors">Next.js</span>
+                                        <span class="text-[10px] font-mono bg-[#f2efe9] px-2.5 py-1 border border-[#d8d4c9] hover:border-vermilion transition-colors">TypeScript</span>
+                                        <span class="text-[10px] font-mono bg-[#f2efe9] px-2.5 py-1 border border-[#d8d4c9] hover:border-vermilion transition-colors">OpenAI API</span>
+                                        <span class="text-[10px] font-mono bg-[#f2efe9] px-2.5 py-1 border border-[#d8d4c9] hover:border-vermilion transition-colors">Tailwind CSS</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 pt-4 border-t border-[#e5e1d5]">
+                                    <a href="https://project-anvaya2.vercel.app" target="_blank" rel="noopener noreferrer" class="magnetic-target inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider bg-charcoal text-ivory px-5 py-2.5 hover:bg-vermilion transition-colors">
+                                        <span>Live Demo</span>
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACT SECTION -->
+            <section id="contact" class="py-28 px-6 md:px-16 border-t border-[#e5e1d5] relative text-center">
+                <div class="max-w-3xl mx-auto">
+                    <span class="font-mono text-xs text-vermilion tracking-[0.3em] uppercase block mb-4">04 / Get In Touch</span>
+                    
+                    <h2 class="font-serif text-5xl md:text-7xl text-charcoal leading-none mb-8">
+                        LET'S BUILD <br>
+                        <span class="italic font-garamond text-vermilion">SOMETHING MEANINGFUL.</span>
+                    </h2>
+                    
+                    <p class="text-mutedGray font-sans text-sm md:text-base max-w-lg mx-auto mb-10 leading-relaxed">
+                        Currently available for select freelance projects, web application architecture, and creative digital collaborations.
+                    </p>
+
+                    <div class="mb-12">
+                        <a href="https://instagram.com/amr4x.sec" target="_blank" rel="noopener noreferrer" class="ticket-btn magnetic-target inline-flex items-center gap-3 px-10 py-5 text-sm font-mono uppercase tracking-[0.25em]">
+                            <span>Contact Me</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </div>
+
+                    <!-- Social Channels Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl mx-auto pt-10 border-t border-[#e5e1d5] text-xs font-mono uppercase tracking-wider">
+                        <a href="https://github.com/imnocx" target="_blank" rel="noopener noreferrer" class="magnetic-target py-3 px-4 bg-[#f2efe9] hover:bg-vermilion hover:text-ivory transition-all duration-300 flex flex-col items-center gap-1 group">
+                            <span class="text-[9px] text-mutedGray group-hover:text-ivory/80 tracking-widest">GITHUB</span>
+                            <span class="font-semibold text-charcoal group-hover:text-ivory">imnocx</span>
+                        </a>
+                        <a href="https://instagram.com/amr4x.sec" target="_blank" rel="noopener noreferrer" class="magnetic-target py-3 px-4 bg-[#f2efe9] hover:bg-vermilion hover:text-ivory transition-all duration-300 flex flex-col items-center gap-1 group">
+                            <span class="text-[9px] text-mutedGray group-hover:text-ivory/80 tracking-widest">INSTAGRAM</span>
+                            <span class="font-semibold text-charcoal group-hover:text-ivory">@amr4x.sec</span>
+                        </a>
+                        <a href="https://tiktok.com/@amr4x.sec" target="_blank" rel="noopener noreferrer" class="magnetic-target py-3 px-4 bg-[#f2efe9] hover:bg-vermilion hover:text-ivory transition-all duration-300 flex flex-col items-center gap-1 group">
+                            <span class="text-[9px] text-mutedGray group-hover:text-ivory/80 tracking-widest">TIKTOK</span>
+                            <span class="font-semibold text-charcoal group-hover:text-ivory">@amr4x.sec</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="px-6 md:px-16 py-8 border-t border-[#e5e1d5] flex flex-col md:flex-row items-center justify-between text-xs font-mono text-mutedGray gap-4 bg-[#f2efe9]">
+                <div>
+                    &copy; 2026 AMR4X. All Rights Reserved.
+                </div>
+                <div class="font-script text-vermilion text-2xl">
+                    Amr4x
+                </div>
+                <div>
+                    DESIGNED WITH PURPOSE & PRECISION
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- JavaScript Logic & Interactions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Loader handling
+            const loader = document.getElementById('loader');
+            if (loader) {
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 700);
+                }, 400);
+            }
+
+            // Custom Cursor Logic
+            const dot = document.getElementById('cursorDot');
+            const ring = document.getElementById('cursorRing');
+
+            if (dot && ring) {
+                window.addEventListener('mousemove', (e) => {
+                    const { clientX: x, clientY: y } = e;
+                    dot.style.transform = `translate(${x}px, ${y}px)`;
+                    ring.style.transform = `translate(${x - 14}px, ${y - 14}px)`;
+                });
+            }
+
+            // Interactive Background Canvas Particles
+            const canvas = document.getElementById('interactiveCanvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width = canvas.width = window.innerWidth;
+                let height = canvas.height = window.innerHeight;
+
+                window.addEventListener('resize', () => {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                });
+
+                const particles = Array.from({ length: 30 }, () => ({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    size: Math.random() * 2 + 1,
+                    alpha: Math.random() * 0.5 + 0.2
+                }));
+
+                function drawCanvas() {
+                    ctx.clearRect(0, 0, width, height);
+                    particles.forEach(p => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+
+                        if (p.x < 0) p.x = width;
+                        if (p.x > width) p.x = 0;
+                        if (p.y < 0) p.y = height;
+                        if (p.y > height) p.y = 0;
+
+                        ctx.fillStyle = `rgba(197, 34, 31, ${p.alpha})`;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                    requestAnimationFrame(drawCanvas);
+                }
+                drawCanvas();
+            }
+
+            // Magnetic Button Effect for Interactive Elements
+            const magneticElements = document.querySelectorAll('.magnetic-target');
+            magneticElements.forEach(el => {
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    el.style.transform = 'translate(0px, 0px)';
+                });
+            });
+
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            if (menuToggle && mobileMenu) {
+                menuToggle.addEventListener('click', () => {
+                    mobileMenu.classList.remove('translate-x-full');
+                });
+            }
+
+            if (closeMenu && mobileMenu) {
+                closeMenu.addEventListener('click', () => {
+                    mobileMenu.classList.add('translate-x-full');
+                });
+            }
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu) mobileMenu.classList.add('translate-x-full');
+                });
+            });
+
+            // Parallax & 3D Interactive Tilt effect for Themis Image
+            const themisCard = document.getElementById('themisCard');
+            const themisImage = document.getElementById('themisImage');
+            
+            if (themisCard) {
+                themisCard.addEventListener('mousemove', (e) => {
+                    const rect = themisCard.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    const rotateX = (y / rect.height) * -14;
+                    const rotateY = (x / rect.width) * 14;
+                    
+                    themisCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+
+                themisCard.addEventListener('mouseleave', () => {
+                    themisCard.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            }
+
+            if (themisImage) {
+                window.addEventListener('scroll', () => {
+                    const scrolled = window.scrollY;
+                    if (scrolled < 1000) {
+                        themisImage.style.transform = `translateY(${scrolled * 0.04}px) scale(${1 + scrolled * 0.0001})`;
+                    }
+                });
+            }
+
+            // Scrollspy Active Navigation Indicator
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 150;
+                    if (window.scrollY >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active-nav');
+                    }
+                });
+            });
+
+            // Reveal animation on scroll
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>
